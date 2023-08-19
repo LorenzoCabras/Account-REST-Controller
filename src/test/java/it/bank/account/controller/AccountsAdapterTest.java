@@ -1,16 +1,18 @@
 package it.bank.account.controller;
 
-import it.bank.account.dto.rest.MoneyTransferRestResponse;
 import it.bank.account.dto.domain.Balance;
 import it.bank.account.dto.domain.Transaction;
 import it.bank.account.dto.rest.MoneyTransferRestRequest;
+import it.bank.account.dto.rest.MoneyTransferRestResponse;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -55,15 +57,17 @@ public class AccountsAdapterTest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<MoneyTransferRestRequest> requestEntity = new HttpEntity<>(request, headers);
-
-        ResponseEntity<MoneyTransferRestResponse> responseEntity = restTemplate.postForEntity(
-                "http://localhost:8080/api/accounts/" + accountId + "/moneyTransfer",
-                requestEntity,
-                MoneyTransferRestResponse.class
+        HttpClientErrorException.BadRequest exception = Assertions.assertThrows(
+                HttpClientErrorException.BadRequest.class,
+                () -> {
+                    restTemplate.postForEntity(
+                            "http://localhost:8080/api/accounts/" + accountId + "/moneyTransfer",
+                            requestEntity,
+                            MoneyTransferRestResponse.class
+                    );
+                }
         );
-        MoneyTransferRestResponse response = responseEntity.getBody();
-        Assert.assertNotNull(response);
-        Assert.assertNotNull(response.getErrorMessage());
-        Assert.assertNull(response.getPayload());
+        String expectedErrorMessage = "Error creating money transfer:";
+        Assert.assertTrue(exception.getResponseBodyAsString().contains(expectedErrorMessage));
     }
 }

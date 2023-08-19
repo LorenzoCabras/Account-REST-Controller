@@ -54,7 +54,7 @@ public class AccountsAdapter {
             LOGGER.severe("AccountsAdapter - ERROR: " + e.getMessage());
             MoneyTransferRestResponse errorResponse = new MoneyTransferRestResponse();
             errorResponse.setErrorMessage("Error creating money transfer: " + e.getMessage());
-            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
     }
 
