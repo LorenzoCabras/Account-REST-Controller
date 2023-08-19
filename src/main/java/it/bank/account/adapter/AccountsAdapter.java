@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Logger;
 
 @ComponentScan(basePackages = "it.bank.account")
 @RestController
 public class AccountsAdapter {
+    private static final Logger LOGGER = Logger.getLogger(AccountsAdapter.class.getName());
     private final ContoPort contoPort;
 
     @Autowired
@@ -40,10 +42,13 @@ public class AccountsAdapter {
     @RequestMapping(value = "/api/accounts/{accountId}/moneyTransfer", method = RequestMethod.POST)
     public ResponseEntity<MoneyTransferResponse> createMoneyTransfer(@PathVariable Long accountId,
                                                                      @RequestBody MoneyTransferRestRequest mtr) {
+        LOGGER.info("AccountsAdapter - createMoneyTransfer");
         try {
             MoneyTransferResponse response = contoPort.createMoneyTransfer(accountId, mtr);
+            LOGGER.info("AccountsAdapter - Money transfer successful");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (ContoPortException e) {
+            LOGGER.severe("AccountsAdapter - ERROR: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
