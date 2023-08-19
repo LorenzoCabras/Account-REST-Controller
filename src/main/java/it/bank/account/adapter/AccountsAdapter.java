@@ -6,6 +6,7 @@ import it.bank.account.dto.domain.Balance;
 import it.bank.account.dto.domain.Transaction;
 import it.bank.account.dto.domain.moneytransfer.MoneyTransferResponse;
 import it.bank.account.dto.rest.MoneyTransferRestRequest;
+import it.bank.account.dto.rest.MoneyTransferRestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
@@ -39,20 +40,23 @@ public class AccountsAdapter {
         }
     }
 
-    @RequestMapping(value = "/api/accounts/{accountId}/moneyTransfer", method = RequestMethod.POST)
-    public ResponseEntity<MoneyTransferResponse> createMoneyTransfer(@PathVariable Long accountId,
-                                                                     @RequestBody MoneyTransferRestRequest mtr) {
+    @RequestMapping(value = "/api/accounts/{accountId}/moneyTransfer", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<MoneyTransferRestResponse> createMoneyTransfer(@PathVariable Long accountId,
+                                                                         @RequestBody MoneyTransferRestRequest mtr) {
         LOGGER.info("AccountsAdapter - createMoneyTransfer");
         try {
             MoneyTransferResponse response = contoPort.createMoneyTransfer(accountId, mtr);
             LOGGER.info("AccountsAdapter - Money transfer successful");
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            MoneyTransferRestResponse restResponse = new MoneyTransferRestResponse();
+            restResponse.setPayload(response);
+            return new ResponseEntity<>(restResponse, HttpStatus.OK);
         } catch (ContoPortException e) {
             LOGGER.severe("AccountsAdapter - ERROR: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            MoneyTransferRestResponse errorResponse = new MoneyTransferRestResponse();
+            errorResponse.setErrorMessage("Error creating money transfer: " + e.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
     // Method to retrieve the balance, which takes 'accountId' as a parameter and sends a GET to the API by invoking the getBalance of 'contoPort'.
     @RequestMapping(value = "/api/accounts/{accountId}/balance", method = RequestMethod.GET)

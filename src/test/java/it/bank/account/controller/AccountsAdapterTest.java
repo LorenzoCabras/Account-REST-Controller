@@ -1,16 +1,15 @@
 package it.bank.account.controller;
 
+import it.bank.account.dto.rest.MoneyTransferRestResponse;
 import it.bank.account.dto.domain.Balance;
 import it.bank.account.dto.domain.Transaction;
-import it.bank.account.dto.domain.moneytransfer.MoneyTransferResponse;
 import it.bank.account.dto.rest.MoneyTransferRestRequest;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
@@ -53,13 +52,18 @@ public class AccountsAdapterTest {
         request.setCurrency("EUR");
         request.setAmount("800.0");
         request.setExecutionDate("2023-08-01");
-            ResponseEntity<MoneyTransferResponse> responseEntity = restTemplate.postForEntity(
-                    "http://localhost:8080/api/accounts/" + accountId + "/moneyTransfer",
-                    request,
-                    MoneyTransferResponse.class
-            );
-            MoneyTransferResponse response = responseEntity.getBody();
-            Assert.assertNotNull(response);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<MoneyTransferRestRequest> requestEntity = new HttpEntity<>(request, headers);
 
+        ResponseEntity<MoneyTransferRestResponse> responseEntity = restTemplate.postForEntity(
+                "http://localhost:8080/api/accounts/" + accountId + "/moneyTransfer",
+                requestEntity,
+                MoneyTransferRestResponse.class
+        );
+        MoneyTransferRestResponse response = responseEntity.getBody();
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.getErrorMessage());
+        Assert.assertNull(response.getPayload());
     }
 }
