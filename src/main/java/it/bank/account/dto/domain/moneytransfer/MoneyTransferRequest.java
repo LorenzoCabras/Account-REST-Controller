@@ -14,7 +14,10 @@ public class MoneyTransferRequest {
     private boolean isInstant;
     private String feeType;
     private String feeAccountId;
+
+/* Field commented as it is not recognized in the Sandbox environment.
     private TaxRelief taxRelief;
+ */
 
     class TaxRelief {
         private String taxReliefId;
@@ -84,6 +87,18 @@ public class MoneyTransferRequest {
             this.legalPersonBeneficiary = legalPersonBeneficiary;
         }
 
+        @Override
+        public String toString() {
+            return "TaxRelief{" +
+                    "taxReliefId='" + taxReliefId + '\'' +
+                    ", isCondoUpgrade=" + isCondoUpgrade +
+                    ", creditorFiscalCode='" + creditorFiscalCode + '\'' +
+                    ", beneficiaryType='" + beneficiaryType + '\'' +
+                    ", naturalPersonBeneficiary=" + naturalPersonBeneficiary +
+                    ", legalPersonBeneficiary=" + legalPersonBeneficiary +
+                    '}';
+        }
+
         class NaturalPersonBeneficiary {
             private String fiscalCode1;
             private String fiscalCode2;
@@ -100,6 +115,17 @@ public class MoneyTransferRequest {
                 this.fiscalCode3 = fiscalCode3;
                 this.fiscalCode4 = fiscalCode4;
                 this.fiscalCode5 = fiscalCode5;
+            }
+
+            @Override
+            public String toString() {
+                return "NaturalPersonBeneficiary{" +
+                        "fiscalCode1='" + fiscalCode1 + '\'' +
+                        ", fiscalCode2='" + fiscalCode2 + '\'' +
+                        ", fiscalCode3='" + fiscalCode3 + '\'' +
+                        ", fiscalCode4='" + fiscalCode4 + '\'' +
+                        ", fiscalCode5='" + fiscalCode5 + '\'' +
+                        '}';
             }
 
             public String getFiscalCode1() {
@@ -155,6 +181,14 @@ public class MoneyTransferRequest {
             public LegalPersonBeneficiary() {
             }
 
+            @Override
+            public String toString() {
+                return "LegalPersonBeneficiary{" +
+                        "fiscalCode='" + fiscalCode + '\'' +
+                        ", legalRepresentativeFiscalCode='" + legalRepresentativeFiscalCode + '\'' +
+                        '}';
+            }
+
             public String getFiscalCode() {
                 return fiscalCode;
             }
@@ -173,7 +207,7 @@ public class MoneyTransferRequest {
         }
     }
 
-    public MoneyTransferRequest(Creditor creditor, String executionDate, String uri, String description, double amount, String currency, boolean isUrgent, boolean isInstant, String feeType, String feeAccountId, TaxRelief taxRelief) {
+    public MoneyTransferRequest(Creditor creditor, String executionDate, String uri, String description, double amount, String currency, boolean isUrgent, boolean isInstant, String feeType, String feeAccountId) {
         this.creditor = creditor;
         this.executionDate = executionDate;
         this.uri = uri;
@@ -184,7 +218,7 @@ public class MoneyTransferRequest {
         this.isInstant = isInstant;
         this.feeType = feeType;
         this.feeAccountId = feeAccountId;
-        this.taxRelief = taxRelief;
+//        this.taxRelief = taxRelief;
     }
 
     public MoneyTransferRequest() {
@@ -269,7 +303,7 @@ public class MoneyTransferRequest {
     public void setFeeAccountId(String feeAccountId) {
         this.feeAccountId = feeAccountId;
     }
-
+/*
     public TaxRelief getTaxRelief() {
         return taxRelief;
     }
@@ -277,18 +311,18 @@ public class MoneyTransferRequest {
     public void setTaxRelief(TaxRelief taxRelief) {
         this.taxRelief = taxRelief;
     }
-
+*/
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MoneyTransferRequest that = (MoneyTransferRequest) o;
-        return Double.compare(amount, that.amount) == 0 && isUrgent == that.isUrgent && isInstant == that.isInstant && Objects.equals(creditor, that.creditor) && Objects.equals(executionDate, that.executionDate) && Objects.equals(uri, that.uri) && Objects.equals(description, that.description) && Objects.equals(currency, that.currency) && Objects.equals(feeType, that.feeType) && Objects.equals(feeAccountId, that.feeAccountId) && Objects.equals(taxRelief, that.taxRelief);
+        return Double.compare(amount, that.amount) == 0 && isUrgent == that.isUrgent && isInstant == that.isInstant && Objects.equals(creditor, that.creditor) && Objects.equals(executionDate, that.executionDate) && Objects.equals(uri, that.uri) && Objects.equals(description, that.description) && Objects.equals(currency, that.currency) && Objects.equals(feeType, that.feeType) && Objects.equals(feeAccountId, that.feeAccountId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(creditor, executionDate, uri, description, amount, currency, isUrgent, isInstant, feeType, feeAccountId, taxRelief);
+        return Objects.hash(creditor, executionDate, uri, description, amount, currency, isUrgent, isInstant, feeType, feeAccountId);
     }
 
     @Override
@@ -304,7 +338,6 @@ public class MoneyTransferRequest {
                 ", isInstant=" + isInstant +
                 ", feeType='" + feeType + '\'' +
                 ", feeAccountId='" + feeAccountId + '\'' +
-                ", taxRelief=" + taxRelief +
                 '}';
     }
 }

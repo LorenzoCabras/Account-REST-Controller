@@ -37,5 +37,14 @@ public class Address {
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
     }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", countryCode='" + countryCode + '\'' +
+                '}';
+    }
 }
 

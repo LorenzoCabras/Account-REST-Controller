@@ -222,6 +222,14 @@ public class MoneyTransferResponse {
         this.account = account;
     }
 
+    @Override
+    public String toString() {
+        return "Debtor{" +
+                "name='" + name + '\'' +
+                ", account=" + account +
+                '}';
+    }
+
     public Debtor() {
     }
 
@@ -258,6 +266,18 @@ public class MoneyTransferResponse {
         this.creditorCurrency = creditorCurrency;
         this.creditorCurrencyDate = creditorCurrencyDate;
         this.exchangeRate = exchangeRate;
+    }
+
+    @Override
+    public String toString() {
+        return "Amount{" +
+                "debtorAmount=" + debtorAmount +
+                ", debtorCurrency='" + debtorCurrency + '\'' +
+                ", creditorAmount=" + creditorAmount +
+                ", creditorCurrency='" + creditorCurrency + '\'' +
+                ", creditorCurrencyDate='" + creditorCurrencyDate + '\'' +
+                ", exchangeRate=" + exchangeRate +
+                '}';
     }
 
     public Amount() {
@@ -324,6 +344,16 @@ public class MoneyTransferResponse {
         this.description = description;
         this.amount = amount;
         this.currency = currency;
+    }
+
+    @Override
+    public String toString() {
+        return "Fee{" +
+                "feeCode='" + feeCode + '\'' +
+                ", description='" + description + '\'' +
+                ", amount=" + amount +
+                ", currency='" + currency + '\'' +
+                '}';
     }
 
     public Fee() {

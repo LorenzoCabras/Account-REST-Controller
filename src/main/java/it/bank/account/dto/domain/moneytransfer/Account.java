@@ -27,5 +27,13 @@ public class Account {
     public void setBicCode(String bicCode) {
         this.bicCode = bicCode;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accountCode='" + accountCode + '\'' +
+                ", bicCode='" + bicCode + '\'' +
+                '}';
+    }
 }
 

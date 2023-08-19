@@ -36,5 +36,14 @@ public class Creditor {
     public void setAddress(Address address) {
         this.address = address;
     }
+
+    @Override
+    public String toString() {
+        return "Creditor{" +
+                "name='" + name + '\'' +
+                ", account=" + account +
+                ", address=" + address +
+                '}';
+    }
 }
 
