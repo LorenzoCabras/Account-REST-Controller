@@ -11,6 +11,7 @@ import it.bank.account.dto.fabrick.FabrickResponseTransactionList;
 import it.bank.account.dto.fabrick.FabrickResponse;
 import it.bank.account.dto.fabrick.FabrickResponseMoneyTransferResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,9 +29,21 @@ import java.util.logging.Logger;
 public class FabrickRestAdapter implements FabrickPort {
 
     private static final Logger LOGGER = Logger.getLogger(FabrickRestAdapter.class.getName());
-    private static final String BASE_URL = "https://sandbox.platfr.io";
-    private static final String AUTH_SCHEMA = "S2S";
-    private static final String API_KEY = "FXOVVXXHVCPVPBZXIJOBGUGSKHDNFRRQJP";
+    @Value("${fabric.api.domains}")
+    private String BASE_URL;
+    @Value("${fabric.authSchema}")
+    private String AUTH_SCHEMA;
+    @Value("${fabric.apiKey}")
+    private String API_KEY;
+    @Value("${fabric.TimeZone}")
+    private String TIME_ZONE;
+    @Value("${fabric.api.balance}")
+    private String apiBalance;
+    @Value("${fabric.api.transactions}")
+    private String apiTransactions;
+    @Value("${fabric.api.moneyTransfer}")
+    private String apiMoneyTransfer;
+
     private static final Long ACCOUNT_ID = 14537780L;
     private static String CONTENT_TYPE = "application/json";
 
@@ -39,10 +52,10 @@ public class FabrickRestAdapter implements FabrickPort {
     @Override
     public FabrickResponse<Balance> getBalance(long accountId) throws FabrickException {
         LOGGER.info("Fabrick - getBalance");
-        String url = BASE_URL + "/api/gbs/banking/v4.0/accounts/" + ACCOUNT_ID + "/balance";
+
+        String url = BASE_URL + apiBalance.replace("{accountId}", String.valueOf(accountId));;
         HttpEntity<String> entity = new HttpEntity<String>(getHttpHeaders());
         ResponseEntity<FabrickResponseBalance> response = restTemplate.exchange(url, HttpMethod.GET, entity, FabrickResponseBalance.class);
-
         FabrickResponse<Balance> result=response.getBody();
         if(response.getStatusCode().is2xxSuccessful()){
             result = response.getBody();
@@ -54,7 +67,7 @@ public class FabrickRestAdapter implements FabrickPort {
     @Override
     public FabrickResponse<TransactionList> getTransactions(long accountId, LocalDate fromDate, LocalDate toDate) throws FabrickException {
         LOGGER.info("Fabrick - getTransaction");
-        String url = BASE_URL + "/api/gbs/banking/v4.0/accounts/" + accountId + "/transactions?fromAccountingDate=" + fromDate + "&toAccountingDate=" + toDate;
+        String url = BASE_URL + apiTransactions.replace("{accountId}", String.valueOf(accountId)).replace("{fromDate}", fromDate.toString()).replace("{toDate}", toDate.toString());
         HttpEntity<String> entity = new HttpEntity<String>(getHttpHeaders());
         try {
             ResponseEntity<FabrickResponseTransactionList> response = restTemplate.exchange(url, HttpMethod.GET, entity, FabrickResponseTransactionList.class);
@@ -73,9 +86,9 @@ public class FabrickRestAdapter implements FabrickPort {
     @Override
     public FabrickResponse<MoneyTransferResponse> createMoneyTransfer(Long accountId, MoneyTransferRequest moneyTransferRequest) throws FabrickException {
         LOGGER.info("Fabrick - createMoneyTransfer");
-        String url = BASE_URL + "/api/gbs/banking/v4.0/accounts/" + accountId + "/payments/money-transfers";
+        String url = BASE_URL + apiMoneyTransfer.replace("{accountId}", String.valueOf(accountId));;
         HttpHeaders headers = getHttpHeaders();
-        headers.set("X-Time-Zone","Europe/Rome");
+        headers.set("X-Time-Zone",TIME_ZONE);
         HttpEntity<MoneyTransferRequest> entity = new HttpEntity<MoneyTransferRequest>(moneyTransferRequest,headers);
         try {
             ResponseEntity responseObject = restTemplate.exchange(url, HttpMethod.POST, entity,Object.class);
@@ -87,7 +100,7 @@ public class FabrickRestAdapter implements FabrickPort {
         }
     }
 
-    private static HttpHeaders getHttpHeaders() {
+    private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Auth-Schema", AUTH_SCHEMA);
         headers.set("Api-Key", API_KEY);
