@@ -55,6 +55,11 @@ public class AccountsAdapter {
             MoneyTransferRestResponse errorResponse = new MoneyTransferRestResponse();
             errorResponse.setErrorMessage("Error creating money transfer: " + e.getMessage());
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        } catch(Exception e) {
+            LOGGER.severe("AccountsAdapter - ERROR: " + e.getMessage());
+            MoneyTransferRestResponse errorResponse = new MoneyTransferRestResponse();
+            errorResponse.setErrorMessage("An unexpected error occurred");
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
