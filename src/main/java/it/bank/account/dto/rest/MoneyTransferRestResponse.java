@@ -4,7 +4,7 @@ import it.bank.account.dto.domain.moneytransfer.MoneyTransferResponse;
 
 import java.util.Objects;
 
-public class MoneyTransferRestResponse extends MoneyTransferResponse{
+public class MoneyTransferRestResponse{
     private MoneyTransferResponse payload;
     private String errorMessage;
     public MoneyTransferRestResponse(MoneyTransferResponse payload, String errorMessage) {
