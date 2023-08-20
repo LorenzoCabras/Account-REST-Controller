@@ -23,7 +23,7 @@ To use the project, follow these steps:
 
 1. Clone the repository to your local machine.
 2. Ensure you have Maven installed. If not, download and install it from Maven's official website.
-3. Execute the provided build commands to run the project.
+3. Execute the build commands and run the project.
 4. Access the API endpoints using a tool like Postman (but you can also use your web browser)
 5. Provide the necessary parameters and request bodies as described below.
 
