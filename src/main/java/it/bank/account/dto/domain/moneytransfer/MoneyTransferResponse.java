@@ -212,7 +212,7 @@ public class MoneyTransferResponse {
         this.hasTaxRelief = hasTaxRelief;
     }
 
-// Classe interna
+// Inner class
     public static class Debtor {
         private String name;
         private Account account;
@@ -250,7 +250,7 @@ public class MoneyTransferResponse {
     }
 }
 
-// Classe interna
+// Inner class
     public static class Amount {
         private double debtorAmount;
         private String debtorCurrency;
@@ -332,7 +332,7 @@ public class MoneyTransferResponse {
     }
 }
 
-// Classe interna
+// Inner class
     public static class Fee {
         private String feeCode;
         private String description;

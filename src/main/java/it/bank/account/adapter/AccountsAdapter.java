@@ -32,10 +32,16 @@ public class AccountsAdapter {
     public ResponseEntity<List<Transaction>> getTransactions(@PathVariable Long accountId,
                                                              @RequestParam String fromAccountingDate,
                                                              @RequestParam String toAccountingDate) {
+        LOGGER.info("AccountsAdapter - getTransactions");
         try {
             List<Transaction> transactions = contoPort.getTransactions(accountId, LocalDate.parse(fromAccountingDate), LocalDate.parse(toAccountingDate));
+            LOGGER.info("Transactions fetched successfully");
             return new ResponseEntity<>(transactions, HttpStatus.OK);
         } catch (ContoPortException e) {
+            LOGGER.severe("AccountsAdapter - ERROR: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            LOGGER.severe("AccountsAdapter - ERROR: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -55,7 +61,7 @@ public class AccountsAdapter {
             MoneyTransferRestResponse errorResponse = new MoneyTransferRestResponse();
             errorResponse.setErrorMessage("Error creating money transfer: " + e.getMessage());
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOGGER.severe("AccountsAdapter - ERROR: " + e.getMessage());
             MoneyTransferRestResponse errorResponse = new MoneyTransferRestResponse();
             errorResponse.setErrorMessage("An unexpected error occurred");
@@ -66,10 +72,16 @@ public class AccountsAdapter {
     // Method to retrieve the balance, which takes 'accountId' as a parameter and sends a GET to the API by invoking the getBalance of 'contoPort'.
     @RequestMapping(value = "/api/accounts/{accountId}/balance", method = RequestMethod.GET)
     public ResponseEntity<Balance> getBalance(@PathVariable Long accountId) {
+        LOGGER.info("AccountsAdapter - getBalance");
         try {
             Balance balance = contoPort.getBalance(accountId);
+            LOGGER.info("Balance fetched successfully");
             return new ResponseEntity<>(balance, HttpStatus.OK);
         } catch (ContoPortException e) {
+            LOGGER.severe("AccountsAdapter - ERROR: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            LOGGER.severe("AccountsAdapter - ERROR: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

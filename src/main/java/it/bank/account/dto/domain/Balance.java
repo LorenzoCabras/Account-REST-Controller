@@ -3,14 +3,7 @@ package it.bank.account.dto.domain;
 import java.time.LocalDate;
 import java.util.Objects;
 
-/*
-{
-  "date": "2018-08-17",
-  "balance": 29.64,
-  "availableBalance": 29.64,
-  "currency": "EUR"
-}
- */
+
 public class Balance {
     private LocalDate date;
     private double balance;

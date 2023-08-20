@@ -1,7 +1,5 @@
 package it.bank.account.dto.rest;
 
-import it.bank.account.dto.domain.moneytransfer.Creditor;
-
 import java.util.Objects;
 
 public class MoneyTransferRestRequest {

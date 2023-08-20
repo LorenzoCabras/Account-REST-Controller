@@ -57,6 +57,7 @@ public class AccountsAdapterTest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<MoneyTransferRestRequest> requestEntity = new HttpEntity<>(request, headers);
+        // Performing the HTTP POST request, expecting a BadRequest exception
         HttpClientErrorException.BadRequest exception = Assertions.assertThrows(
                 HttpClientErrorException.BadRequest.class,
                 () -> {
@@ -67,6 +68,7 @@ public class AccountsAdapterTest {
                     );
                 }
         );
+        // Verifying that the exceptino message contains the expected error message
         String expectedErrorMessage = "Error creating money transfer:";
         Assert.assertTrue(exception.getResponseBodyAsString().contains(expectedErrorMessage));
     }
