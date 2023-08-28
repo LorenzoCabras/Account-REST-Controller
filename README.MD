@@ -28,7 +28,22 @@ To use the project, follow these steps:
 5. Provide the necessary parameters and request bodies as described below.
 
 ## API Endpoints
-### Get Account Balance
+The API endpoints in this project are documented using OpenAPI/Swagger. You can explore and test the endpoints easily using the Swagger UI.
+
+### Accessing the API Documentation
+
+To access the API documentation, follow these steps:
+
+1. Start the project and ensure it's running.
+2. Open your web browser and navigate to [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+### Using the API Documentation
+
+1. Once you're on the Swagger UI page, you'll see a list of available endpoints.
+2. Click on an endpoint to expand it and see details about the endpoint, including request parameters and request/response examples.
+3. You can test the endpoint directly from Swagger UI by providing input parameters and clicking the "Try it out" button.
+
+### Endpoints Overview
+#### Get Account Balance
 Retrieves the balance of a specific cash account.
 
 - **Endpoint**: GET `/api/accounts/{accountId}/balance/` 
@@ -39,7 +54,7 @@ Retrieves the balance of a specific cash account.
     - Status: 200 OK (if successful)
     - Body: JSON representation of the account balance.
 
-### Get Account Transactions
+#### Get Account Transactions
 
 Retrieve a list of transactions for a specific account within a given time range.
 
@@ -53,7 +68,7 @@ Retrieve a list of transactions for a specific account within a given time range
     - Status: 200 OK (if successful)
     - Body: JSON array representation with the list of the transactions.
 
-### Create Money Transfer
+#### Create Money Transfer
 
 Make a new money transfer.
 

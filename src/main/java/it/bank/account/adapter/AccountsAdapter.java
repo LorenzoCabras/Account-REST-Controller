@@ -1,5 +1,8 @@
 package it.bank.account.adapter;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import it.bank.account.domain.port.ContoPort;
 import it.bank.account.domain.port.exceptions.ContoPortException;
 import it.bank.account.dto.domain.Balance;
@@ -27,7 +30,11 @@ public class AccountsAdapter {
     public AccountsAdapter(ContoPort contoPort) {
         this.contoPort = contoPort;
     }
-
+    @Operation(summary = "Retrieve a list of transactions for a specific account within a given time range")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "Account not found")
+    })
     @RequestMapping(value = "/api/accounts/{accountId}/transactions", method = RequestMethod.GET)
     public ResponseEntity<List<Transaction>> getTransactions(@PathVariable Long accountId,
                                                              @RequestParam String fromAccountingDate,
@@ -46,6 +53,11 @@ public class AccountsAdapter {
         }
     }
 
+    @Operation(summary = "Make a new money transfer")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "Bad Request")
+    })
     @RequestMapping(value = "/api/accounts/{accountId}/moneyTransfer", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<MoneyTransferRestResponse> createMoneyTransfer(@PathVariable Long accountId,
                                                                          @RequestBody MoneyTransferRestRequest mtr) {
@@ -70,6 +82,11 @@ public class AccountsAdapter {
     }
 
     // Method to retrieve the balance, which takes 'accountId' as a parameter and sends a GET to the API by invoking the getBalance of 'contoPort'.
+    @Operation(summary = "Retrieves the balance of a specific cash account")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "Account not found")
+    })
     @RequestMapping(value = "/api/accounts/{accountId}/balance", method = RequestMethod.GET)
     public ResponseEntity<Balance> getBalance(@PathVariable Long accountId) {
         LOGGER.info("AccountsAdapter - getBalance");
