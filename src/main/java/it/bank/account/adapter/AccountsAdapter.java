@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @ComponentScan(basePackages = "it.bank.account")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class AccountsAdapter {
     private static final Logger LOGGER = Logger.getLogger(AccountsAdapter.class.getName());
