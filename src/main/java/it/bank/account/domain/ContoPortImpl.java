@@ -1,7 +1,6 @@
 package it.bank.account.domain;
 
 import it.bank.account.domain.port.FabrickPort;
-import it.bank.account.domain.port.TransactionPort;
 import it.bank.account.domain.port.exceptions.ContoPortException;
 import it.bank.account.domain.port.exceptions.FabrickException;
 import it.bank.account.dto.domain.Balance;
@@ -23,8 +22,6 @@ public class ContoPortImpl implements ContoPort {
 
     @Autowired
     private FabrickPort fabricAdapter;
-    @Autowired
-    private TransactionPort transactionPort;
 
     public ContoPortImpl() {
     }
@@ -62,9 +59,7 @@ public class ContoPortImpl implements ContoPort {
     @Override
     public List<Transaction> getTransactions(long accountId, LocalDate fromAccountingDate, LocalDate toAccountingDate) throws ContoPortException {
         try {
-            List<Transaction> transactions = fabricAdapter.getTransactions(accountId, fromAccountingDate, toAccountingDate).getPayload().getList();
-            transactionPort.saveTransactions(transactions);
-            return transactions;
+            return fabricAdapter.getTransactions(accountId, fromAccountingDate, toAccountingDate).getPayload().getList();
         } catch (FabrickException e) {
             throw new ContoPortException(e.getMessage());
         }

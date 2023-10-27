@@ -1,13 +1,9 @@
 package it.bank.account.dto.domain;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.time.LocalDate;
 import java.util.Objects;
-@Document(collection = "transactions")
+
 public class Transaction {
-    @Id
     private long transactionId;
     private long operationId;
     private LocalDate accountingDate;
